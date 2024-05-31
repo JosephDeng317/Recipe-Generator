@@ -1,0 +1,5 @@
+['1 Broccoli', '1 Chicken Breast', '3 Tomatoes', '1 Lemon', '2 Pork Chops', '4 Potatoes', '6 Eggs',] 
+
+provide some recipes that can be created using these items, assume that we have access to salt and pepper as seasoning, but if more seasoning should be added please specify.
+
+Return the recipes as a JSON object
