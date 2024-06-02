@@ -3,11 +3,10 @@ const myString = "Hello, this is a string from script.js!";
 
 // Find the element where you want to display the string
 const displayArea = document.getElementById('recipeContainer');
+const submitButton = document.getElementById('submitIngredients');
 
-displayArea.innerHTML=myString
 
-
-console.log("Hello")
+submitButton.addEventListener('click', postIngredients);
 
 
 fetch('http://localhost:3000/api/generate-recipes')
@@ -35,6 +34,26 @@ fetch('http://localhost:3000/api/generate-recipes')
             recipeContainer.appendChild(recipeInstructions);
         });
     });
+
+
+function addMore() {
+    var container = document.getElementById('ingredientContainer');
+    var newGroup = document.createElement('div');
+    newGroup.className = 'form-group';
+    newGroup.innerHTML = `
+        <label for="ingredient">Ingredient</label>
+        <input type="text" name="ingredient[]" placeholder="Enter ingredient" required>
+        <label for="quantity">Quantity</label>
+        <input type="text" name="quantity[]" placeholder="Enter quantity" required>
+    `;
+    container.appendChild(newGroup);
+};
+
+
+function postIngredients() {
+    
+}
+
 
 
 // document.getElementById('recipeForm').addEventListener('submit', async function(event) {

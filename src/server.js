@@ -12,11 +12,20 @@ import axios from 'axios';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const port = 3000; // Or any port you prefer
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.urlencoded({ extended: true }));
 
 const apiKey = process.env.API_KEY;
 const apiUrl = process.env.API_URL;
@@ -106,7 +115,7 @@ async function mockGetResponse(prompt) {
 
 
 async function sendIngredients(ingredients) {
-  const prompt = ingredients + ", provide some recipes that can be created using these items, assume that we have access to salt and pepper as seasoning, but if more seasoning should be added please specify. Return the recipes as a JSON object";
+  const prompt = ingredients + ", provide some recipes that can be created using these items, assume that we have access to salt and pepper as seasoning, but if more seasoning should be added please specify. Note that not all of the ingredients have to be used, for example, if there are 6 eggs, it is okay to just use 3 eggs but please specify in the ingredients list. Return the recipes as a JSON object";
   const data = await mockGetResponse(prompt);
   console.log('Data from getResponse:', data); 
   return data;
@@ -115,9 +124,48 @@ async function sendIngredients(ingredients) {
 
 app.get('/api/generate-recipes', async (req, res) => {
   const ingredients = ['1 Broccoli', '1 Chicken Breast', '3 Tomatoes', '1 Lemon', '2 Pork Chops', '4 Potatoes', '6 Eggs'];
+  // const ingredients = {
+  //   'Broccoli' : '1',
+  //   'Chicken Breast' : '1',
+  //   'Tomatoes' : '3',
+  //   'Lemon' : '1',
+  //   'Pork Chops' : '2',
+  //   'Potatoes' : '4',
+  //   'Eggs' : '6',
+  // }
+  // try {
+  //   console.log('Received request for generating recipes');
+  //   const data = await sendIngredients(ingredients);
+  //   console.log('Generated recipes:', data);
+  //   res.json(data);
+  // } catch (error) {
+  //   console.error('Error generating recipes:', error);
+  //   res.status(500).json({ error: 'An error occurred while generating recipes.' });
+  // }
+});
+
+app.get('/', (req, res) => {
+  res.status(200).send('hello');
+})
+
+app.post('/submit-ingredients', async (req, res) => {
+  const ingredients = req.body.ingredient;
+  const quantities = req.body.quantity;
+  var ingredientsWithQuantities = [];
+
+  for (let i = 0; i < ingredients.length; i++) {
+    ingredientsWithQuantities.push(quantities[i] + " " + ingredients[i]);
+  }
+
+  // Handle the data as needed
+  console.log('Ingredients:', ingredients);
+  console.log('Quantities:', quantities);
+
+  res.send('Form data received');
+
   try {
     console.log('Received request for generating recipes');
-    const data = await sendIngredients(ingredients);
+    const data = await sendIngredients(ingredientsWithQuantities);
     console.log('Generated recipes:', data);
     res.json(data);
   } catch (error) {
