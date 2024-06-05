@@ -41,20 +41,6 @@ const openai = new OpenAI({
   apiKey: process.env.API_KEY,
 });
 
-async function sendFileToOpenAI(filePath) {
-  try {
-    const data = await fs.readFile(filePath, "utf8");
-    const payload = {
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: data }],
-    };
-    console.log(data);
-    await getResponse(payload);
-  } catch (err) {
-    console.error("Error reading the file:", err);
-  }
-}
-
 async function getResponse(data) {
   const payload = {
     model: "gpt-3.5-turbo",
@@ -133,8 +119,8 @@ async function mockGetResponse(prompt) {
 async function sendIngredients(ingredients) {
   const prompt =
     ingredients +
-    ", provide some recipes that can be created using these items, assume that we have access to salt and pepper as seasoning, but if more seasoning should be added please specify. Note that not all of the ingredients have to be used, for example, if there are 6 eggs, it is okay to just use 3 eggs but please specify in the ingredients list. Return the recipes as a JSON object";
-  const data = await getResponse(prompt);
+    ", provide some recipes that can be created using these items, assume that we have access to salt and pepper as seasoning, but if more seasoning should be added please specify. Note that not all of the ingredients have to be used, for example, if there are 6 eggs, it is okay to just use 3 eggs but please specify in the ingredients list. Return the recipes as a JSON object and please use this format {title: 'title', ingredients: ['i1', 'i2'], instructions: 'instructions'";
+  const data = await mockGetResponse(prompt);
   console.log("Data from getResponse:", data);
   return data;
 }
@@ -185,8 +171,6 @@ app.post("/submit-ingredients", async (req, res) => {
   // Handle the data as needed
   console.log("Ingredients:", ingredientsWithQuantities);
 
-  // res.send("Form data received");
-
   try {
     console.log("Received request for generating recipes");
     const data = await sendIngredients(ingredientsWithQuantities);
@@ -211,27 +195,3 @@ app.post("/submit-ingredients", async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-// Iterate over each recipe and log it to the console
-// const recipeContainer = document.getElementById('recipeContainer');
-// recipes.forEach((recipe, index) => {
-//   console.log(`Recipe ${index + 1}:`);
-//   console.log(`Name: ${recipe.name}`);
-//   console.log('Ingredients:');
-//   recipe.ingredients.forEach(ingredient => {
-//     console.log(`- ${ingredient}`);
-//   });
-//   console.log('Instructions:');
-//   console.log(recipe.instructions);
-//   console.log('------------------------');
-// });
-
-// recipeContainer.textContent = "RECIPES!!"
-
-//getResponse(payload);
-
-// openai.chat.completions.create(payload)
-// .then(response => response.json())
-// .then(data => {
-//     console.log(data);
-// }).catch(error => console.error('Error:', error));
