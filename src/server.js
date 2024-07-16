@@ -120,7 +120,7 @@ async function sendIngredients(ingredients) {
   const prompt =
     ingredients +
     ", provide some recipes that can be created using these items, assume that we have access to salt and pepper as seasoning, but if more seasoning should be added please specify. Note that not all of the ingredients have to be used, for example, if there are 6 eggs, it is okay to just use 3 eggs but please specify in the ingredients list. Return the recipes as a JSON object and please use this format {title: 'title', ingredients: ['i1', 'i2'], instructions: 'instructions'";
-  const data = await mockGetResponse(prompt);
+  const data = await getResponse(prompt);
   console.log("Data from getResponse:", data);
   return data;
 }
