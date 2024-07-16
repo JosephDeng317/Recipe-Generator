@@ -54,3 +54,29 @@
 .hidden {
   display: none;
 }
+
+.transparent-button {
+  border: none;
+  background: transparent;
+}
+
+.button-container {
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+}
+.hover-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+.button-container:hover .hover-icon {
+  display: block;
+}
+
+.add-icon {
+  font-size: 200px !important;
+  color: lightgray;
+}
