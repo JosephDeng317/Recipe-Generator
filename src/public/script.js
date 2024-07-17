@@ -48,12 +48,16 @@ function addMore() {
 
 function showForm() {
   document.getElementById("showFormButton").classList.add("hidden");
+  document.getElementById("hoverIcon").classList.add("hidden");
   document.getElementById("form").classList.remove("hidden");
+  const hoverIcon = document.getElementById("hoverIcon");
 }
 
 function hideForm() {
   document.getElementById("showFormButton").classList.remove("hidden");
+  document.getElementById("hoverIcon").classList.remove("hidden");
   document.getElementById("form").classList.add("hidden");
+  const hoverIcon = document.getElementById("hoverIcon");
 }
 
 // document.getElementById('recipeForm').addEventListener('submit', async function(event) {
