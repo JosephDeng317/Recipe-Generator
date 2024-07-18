@@ -1,6 +1,3 @@
-// Define your string
-const myString = "Hello, this is a string from script.js!";
-
 // Find the element where you want to display the string
 const displayArea = document.getElementById("recipeContainer");
 const submitButton = document.getElementById("submitIngredients");
