@@ -24,7 +24,17 @@ const port = 3000; // Or any port you prefer
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
+
+// app.use(express.static(path.join(__dirname, "../dist")));
+// app.use(express.static(path.join(__dirname, "public")));
+
+// Serve static files from the "dist" directory
+app.use(express.static(path.join(__dirname, "../dist")));
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, "../src/public")));
+
+// Serve node_modules directory
 app.use(express.urlencoded({ extended: true }));
 
 // Set the view engine to ejs
@@ -119,7 +129,7 @@ async function sendIngredients(ingredients) {
   return data;
 }
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.status(200).send("hello");
 });
 

@@ -56,27 +56,3 @@ function hideForm() {
   document.getElementById("form").classList.add("hidden");
   const hoverIcon = document.getElementById("hoverIcon");
 }
-
-// document.getElementById('recipeForm').addEventListener('submit', async function(event) {
-//     event.preventDefault();
-//     const prompt = document.getElementById('prompt').value;
-//     const response = await fetch('http://localhost:3000/api/generate-recipe', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ prompt })
-//     });
-//     const data = await response.json();
-//     const recipeContainer = document.getElementById('recipeContainer');
-//     recipeContainer.innerHTML = '';
-
-//     data.choices.forEach(choice => {
-//         const recipeDiv = document.createElement('div');
-//         recipeDiv.classList.add('recipe');
-//         const recipeContent = document.createElement('p');
-//         recipeContent.textContent = choice.message.content;
-//         recipeDiv.appendChild(recipeContent);
-//         recipeContainer.appendChild(recipeDiv);
-//     });
-// });
