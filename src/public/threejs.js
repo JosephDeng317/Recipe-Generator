@@ -17,13 +17,21 @@ container.appendChild(renderer.domElement);
 
 const loader = new GLTFLoader();
 
+let meshIndex = 0;
+
 let model;
 loader.load(
   "./assets/fridge.glb",
   function (gltf) {
     gltf.scene.traverse((child) => {
       if (child.isMesh) {
-        child.material = new THREE.MeshStandardMaterial({ color: 0xb0b0b0 });
+        console.log(child.mesh);
+        if (meshIndex === 0) {
+          child.material = new THREE.MeshStandardMaterial({ color: 0xd1cdcd });
+        } else {
+          child.material = new THREE.MeshStandardMaterial({ color: 0x4f4f4f });
+        }
+        meshIndex++;
       }
     });
     model = gltf.scene;
@@ -44,7 +52,7 @@ const ambientLight = new THREE.AmbientLight(0x404040, 1); // soft white light
 scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(1, 1, 1).normalize();
+directionalLight.position.set(1, 0.2, 1).normalize();
 scene.add(directionalLight);
 
 // Cursor position

@@ -24,7 +24,7 @@ body {
   margin-bottom: 10px;
 }
 .add-more-button {
-  background-color: #4caf50;
+  background: linear-gradient(45deg, #4a9c63, #6bc079, #55917d);
   color: white;
   padding: 10px 15px;
   border: none;
@@ -32,7 +32,7 @@ body {
   cursor: pointer;
 }
 .add-more-button:hover {
-  background-color: #45a049;
+  background: linear-gradient(45deg, #246136, #499055, #30755e);
 }
 
 .recipe {
@@ -85,7 +85,24 @@ body {
 
 .add-icon {
   font-size: 200px !important;
-  color: #56db44;
+  /* color: #8eb08d; */
+  /* background: -webkit-linear-gradient(#8eb08d, #2c4e36);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  font-size: 72px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #4a9c63, #a2ecae, #edf0ef);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.add-icon:hover {
+  transform: scale(1.1); /* Slightly scale up to reduce blurriness */
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .unselectable {
