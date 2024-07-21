@@ -129,8 +129,19 @@ async function sendIngredients(ingredients) {
   return data;
 }
 
+// app.get("*", (req, res) => {
+//   res.status(200).send("hello");
+// });
+
+// Specific route to ensure bundle.js is served correctly
+app.get("/bundle.js", (req, res) => {
+  const bundlePath = path.join(__dirname, "../dist/bundle.js");
+  console.log(`Serving bundle.js from: ${bundlePath}`);
+  res.sendFile(bundlePath);
+});
+
 app.get("*", (req, res) => {
-  res.status(200).send("hello");
+  res.sendFile(path.join(__dirname, "../src/public/index.html"));
 });
 
 app.post("/submit-ingredients", async (req, res) => {

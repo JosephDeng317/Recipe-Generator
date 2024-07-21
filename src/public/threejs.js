@@ -1,49 +1,58 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-// import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
+// import * as THREE from "./three.module.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.131.3/build/three.module.js";
 
-console.log("hello this is three");
-
-if (THREE) {
-  console.log("THREE imported successfully:", THREE);
-} else {
-  console.error("THREE import failed");
-}
-
+// Scene, camera, renderer
 const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0xffffff); // Set background color to white
+document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.SphereGeometry(3, 64, 64);
-const material = new THREE.MeshStandardMaterial();
-material.color = { r: 0, g: 255, b: 0 };
+// Cube
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
 
-const mesh = new THREE.Mesh(geometry, material);
+camera.position.z = 5;
 
-scene.add(mesh);
+// const ambientLight = new THREE.AmbientLight(0x404040, 1); // soft white light
+// scene.add(ambientLight);
 
-// Sizes
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(1, 1, 1).normalize();
+scene.add(directionalLight);
 
-const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(0, 10, 10);
-scene.add(light);
+// Cursor position
+let mouseX = 0;
+let mouseY = 0;
 
-const camera = new THREE.PerspectiveCamera(45, 800 / 600);
-camera.position.z = 20;
+document.addEventListener("mousemove", (event) => {
+  mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+  mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
-scene.add(camera);
+  // Update cube rotation based on mouse position
+  cube.rotation.y = mouseX * Math.PI;
+  cube.rotation.x = mouseY * Math.PI;
+});
 
-// Renderer
-const canvas = document.querySelector(".webgl");
-const renderer = new THREE.WebGLRenderer({ canvas });
-renderer.setSize(800, 600);
-renderer.render(scene, camera);
-
-// Step 4: Add OrbitControls for Rotation
-// const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-// Animation Loop
+// Animation loop
 function animate() {
-  // requestAnimationFrame(animate);
-  // controls.update();
+  requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }
 
 animate();
+
+// Handle window resize
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
