@@ -28,9 +28,6 @@ app.use(cors());
 // app.use(express.static(path.join(__dirname, "../dist")));
 // app.use(express.static(path.join(__dirname, "public")));
 
-// Serve static files from the "dist" directory
-app.use(express.static(path.join(__dirname, "../dist")));
-
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "../src/public")));
 
@@ -132,13 +129,6 @@ async function sendIngredients(ingredients) {
 // app.get("*", (req, res) => {
 //   res.status(200).send("hello");
 // });
-
-// Specific route to ensure bundle.js is served correctly
-app.get("/bundle.js", (req, res) => {
-  const bundlePath = path.join(__dirname, "../dist/bundle.js");
-  console.log(`Serving bundle.js from: ${bundlePath}`);
-  res.sendFile(bundlePath);
-});
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../src/public/index.html"));

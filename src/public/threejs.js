@@ -1,29 +1,47 @@
 // import * as THREE from "./three.module.js";
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.131.3/build/three.module.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/loaders/GLTFLoader.js";
+
+// target container
+const container = document.getElementById("showFormButton");
+const WIDTH = 400;
+const HEIGHT = 500;
 
 // Scene, camera, renderer
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+const camera = new THREE.PerspectiveCamera(75, WIDTH / HEIGHT, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(WIDTH, HEIGHT);
 renderer.setClearColor(0xffffff); // Set background color to white
-document.body.appendChild(renderer.domElement);
+container.appendChild(renderer.domElement);
 
-// Cube
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const loader = new GLTFLoader();
 
-camera.position.z = 5;
+let model;
+loader.load(
+  "./assets/fridge.glb",
+  function (gltf) {
+    gltf.scene.traverse((child) => {
+      if (child.isMesh) {
+        child.material = new THREE.MeshStandardMaterial({ color: 0xb0b0b0 });
+      }
+    });
+    model = gltf.scene;
+    model.rotation.y = Math.PI / -2;
+    scene.add(model);
+  },
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+  },
+  function (error) {
+    console.error("An error happened", error);
+  }
+);
 
-// const ambientLight = new THREE.AmbientLight(0x404040, 1); // soft white light
-// scene.add(ambientLight);
+camera.position.z = 4.5;
+
+const ambientLight = new THREE.AmbientLight(0x404040, 1); // soft white light
+scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(1, 1, 1).normalize();
@@ -38,8 +56,8 @@ document.addEventListener("mousemove", (event) => {
   mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
   // Update cube rotation based on mouse position
-  cube.rotation.y = mouseX * Math.PI;
-  cube.rotation.x = mouseY * Math.PI;
+  model.rotation.y = (mouseX - Math.PI / 2) * Math.PI * 0.3;
+  model.rotation.x = mouseY * Math.PI * -0.3;
 });
 
 // Animation loop
@@ -54,5 +72,5 @@ animate();
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(WIDTH, HEIGHT);
 });
